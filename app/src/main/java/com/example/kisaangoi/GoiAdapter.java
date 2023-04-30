@@ -2,7 +2,6 @@ package com.example.kisaangoi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.ArrayList;
 
 public class GoiAdapter extends RecyclerView.Adapter<GoiAdapter.GoiViewHolder> {
+    private final Context mContext;
+    private final ArrayList<GoiDetail> goiDetails;
 
-    LayoutInflater layoutInflater;
-    List<GoiDetail> goiDetails;
-
-    public GoiAdapter(Context context,List<GoiDetail> details){
-        this.layoutInflater=LayoutInflater.from(context);
-        this.goiDetails=details;
+    public GoiAdapter(Context context, ArrayList<GoiDetail> details){
+        this.goiDetails = details;
+        this.mContext = context;
     }
 
     @NonNull
     @Override
     public GoiViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.goiitem,parent,false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.goiitem, parent, false);
         return new GoiViewHolder(view);
     }
 
@@ -37,29 +34,21 @@ public class GoiAdapter extends RecyclerView.Adapter<GoiAdapter.GoiViewHolder> {
     public void onBindViewHolder(@NonNull GoiViewHolder holder, int position) {
         holder.itemName.setText(goiDetails.get(position).getGroceryName());
         holder.itemPlace.setText(goiDetails.get(position).getGroceryPlace());
-        holder.itemPrice.setText("₹"+goiDetails.get(position).getGroceryPrice());
-        Calendar cal = Calendar.getInstance(Locale.getDefault());
-        cal.setTimeInMillis(goiDetails.get(position).getGroceryTime()*1000);
-        String date = DateFormat.format("dd/MM/yyyy",cal).toString();
-        holder.itemDate.setText(date);
+        holder.itemPrice.setText("₹" + goiDetails.get(position).getGroceryPrice());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return goiDetails.size();
     }
 
     public static class GoiViewHolder extends RecyclerView.ViewHolder {
-        TextView itemName,itemPlace,itemPrice,itemDate;
+        TextView itemName, itemPlace, itemPrice;
         public GoiViewHolder(@NonNull View itemView){
             super(itemView);
-            itemName=itemView.findViewById(R.id.ItemNameView);
-            itemPlace=itemView.findViewById(R.id.Itemplace);
-            itemPrice=itemView.findViewById(R.id.Price);
-            itemDate=itemView.findViewById(R.id.ItemDate);
-
-
+            itemName = itemView.findViewById(R.id.ItemNameView);
+            itemPlace = itemView.findViewById(R.id.Itemplace);
+            itemPrice = itemView.findViewById(R.id.Price);
         }
-
     }
 }
